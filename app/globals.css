@@ -4,6 +4,6 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  height: 100vh;
   overflow: hidden;
-  height: 100%;
 }
