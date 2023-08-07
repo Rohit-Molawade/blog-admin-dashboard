@@ -1,23 +1,16 @@
-"use client";
-
 import React, { useRef } from "react";
-import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-const TextEditor = () => {
+require("dotenv").config();
+
+const TextEditor = ({ handleChange, editorData }) => {
   const editorRef = useRef(null);
-
-  const [textField, settextField] = useState("Your content goes here");
-
-  const handleEditorChange = (content, editor) => {
-    settextField({ ...textField, content });
-  };
-
-  console.log(textField);
 
   return (
     <>
       <Editor
+        apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
         onInit={(evt, editor) => (editorRef.current = editor)}
+        initialValue={editorData}
         init={{
           height: 500,
           menubar: true,
@@ -33,8 +26,7 @@ const TextEditor = () => {
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}
-        value={textField.textField}
-        onEditorChange={handleEditorChange}
+        onEditorChange={handleChange}
       />
     </>
   );

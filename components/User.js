@@ -25,6 +25,6 @@ export default function User() {
         height={40}
       />
       <h1 className=" text-lg">{session.user.name}</h1>
-    </ div>
+    </div>
   );
 }

@@ -7,16 +7,16 @@ export const links = [
   {
     name: "Dashboard",
     path: "/",
-    image:  Dashboard ,
+    image: Dashboard,
   },
   {
     name: "New Post",
     path: "/new_post",
-    image: Newpost ,
+    image: Newpost,
   },
   {
     name: "Log Out",
-    path: {signOut},
-    image: Logout ,
+    path: { signOut },
+    image: Logout,
   },
 ];
