@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function Form({ formData, edit }) {
   //Router hook to redirect users
@@ -13,7 +14,7 @@ export default function Form({ formData, edit }) {
   //State to maintain form elements
   const [formContent, setFormContent] = useState({
     title: formData ? formData.title : "",
-    banner_image: "",
+    banner_image: { image: "", preview_src: "" },
     content: formData ? formData.v_content : "",
   });
 
@@ -58,7 +59,10 @@ export default function Form({ formData, edit }) {
     e.preventDefault();
     setFormContent((prevFormContent) => ({
       ...prevFormContent,
-      banner_image: fileInput.current.files[0],
+      banner_image: {
+        image: fileInput.current.files[0],
+        preview_src: URL.createObjectURL(fileInput.current.files[0]),
+      },
     }));
   };
 
@@ -79,12 +83,11 @@ export default function Form({ formData, edit }) {
 
     formData_send.append("title", formContent.title);
     formData_send.append("content", formContent.content);
-    formData_send.append("banner_image", formContent.banner_image);
+    formData_send.append("banner_image", formContent.banner_image.image);
 
     if (edit) {
       fetchOption.method = "PUT";
       fetchOption.url = `http://localhost:3001/api/posts/${formData._id}`;
-
     } else {
       fetchOption.method = "POST";
       fetchOption.url = `http://localhost:3001/api/posts/`;
@@ -132,7 +135,7 @@ export default function Form({ formData, edit }) {
       </div>
       <TextEditor
         handleChange={handleEditorChange}
-        editorData={formData ? formData.v_content : 'Your content Goes here'}
+        editorData={formData ? formData.v_content : "Your content Goes here"}
       />
       <div className="bg-white mt-4 p-4 flex gap-10 items-baseline">
         <label className="text-2xl font-bold">Choose Banner Image {"  "}</label>
@@ -144,6 +147,24 @@ export default function Form({ formData, edit }) {
           required
           accept=".jpg, .png, .jpeg"
         />
+      </div>
+
+      <div className=" w-full">
+        <Link
+          href={{
+            pathname: `/preview`,
+            query: {
+              title: formContent.title,
+              content: formContent.content,
+              banner_image: formContent.banner_image.preview_src,
+            },
+          }}
+          target="__blank"
+        >
+          <p className=" w-full bg-white p-3 mt-12 text-xl font-extrabold text-center">
+            Preview
+          </p>
+        </Link>
       </div>
       <button
         type="submit"

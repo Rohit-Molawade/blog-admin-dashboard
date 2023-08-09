@@ -23,7 +23,6 @@ const handler = NextAuth({
         });
 
         const data = await response.json();
-        console.log(data)
 
         if (data.error) {
           return null;
@@ -51,6 +50,10 @@ const handler = NextAuth({
       return Promise.resolve(session);
     },
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60,
+  }
 });
 
 export { handler as GET, handler as POST };

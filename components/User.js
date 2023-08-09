@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 export default function User() {
+    //Get session Date
   const { status, data: session } = useSession({
     required: true,
     onUnauthenticated() {

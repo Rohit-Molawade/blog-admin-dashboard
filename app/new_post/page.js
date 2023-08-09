@@ -1,5 +1,3 @@
-"use client";
-
 import Form from "@/components/post_form";
 
 export default function Page() {

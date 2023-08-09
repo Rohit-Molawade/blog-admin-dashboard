@@ -1,12 +1,14 @@
 import Link from "next/link";
-import Image from "next/image";
 import { publishedPost } from "@/utils/getpost";
-import { toast } from "react-toastify";
+import DeletePost from "./deletePost";
+import PublishPost from "./publishPost";
 
 export default async function Posts({ publish }) {
   try {
-    const posts = await publishedPost(publish);
+    let posts = await publishedPost(publish);
+
     if (!posts) {
+        //Add toast Message
       console.log("error");
     }
 
@@ -15,12 +17,15 @@ export default async function Posts({ publish }) {
         {posts.posts.map((post) => {
           return (
             <>
-              <div className="border-2 border-sidebar-bg rounded-lg my-8 min-w-fit">
+              <div
+                className="border-2 border-sidebar-bg rounded-lg my-8 min-w-fit"
+                key={post.id}
+              >
                 <div className="flex bg-sidebar-bg text-white p-3 overflow-ellipsis justify-between">
                   <p className=" text-xl font-bold">{post.title}</p>
-                  <p>Pos</p>
+                  <PublishPost postId={post.id} publish={publish} />
                 </div>
-                <div className="p-3 flex flex-wrap gap-28 items-center justify-evenly">
+                <div className="p-3 flex flex-wrap gap-28 items-center justify-center">
                   <div>
                     <p>
                       <em>Created At: </em>
@@ -33,13 +38,14 @@ export default async function Posts({ publish }) {
                     </p>
                     <p className=" font-medium">{post.published_time}</p>
                   </div>
-                  <div className="">
+                  <div>
                     <Link href={`/edit_post/${post.id}`}>
                       <button className="bg-sidebar-bg text-white p-2 px-6 rounded-md">
                         EDIT
                       </button>
                     </Link>
                   </div>
+                  <DeletePost postid={post.id} />
                 </div>
               </div>
             </>
@@ -48,7 +54,7 @@ export default async function Posts({ publish }) {
       </div>
     );
   } catch (error) {
-    console.log('error')
-    return;
+    console.log("error");
+    return error;
   }
 }
